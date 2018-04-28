@@ -1,6 +1,6 @@
 {
 	"name": "dnadesign/silverstripe-elemental-skeletons",
-	"description": "Elemental Archetypes",
+	"description": "Create skeletons of elements that can be automatically added when pages are created.",
 	"type": "silverstripe-vendormodule",
 	"keywords": ["silverstripe", "element", "elemental", "content blocks", "skeletons"],
 	"license": "BSD-3-Clause",
