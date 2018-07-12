@@ -20,11 +20,14 @@ use Page;
  * Creates a skeleton of elements that can help bootstrap pages with blank elements.
  *
  * A Skeleton consists of a title (visible only in the CMS) and a link to a page type. Each page type can be assigned
- * only one {@link Skeleton} object. Each skeleton contains one or more {@link SkeletonPart} objects.
+ * multiple {@link Skeleton} objects. If a page type has multiple skeletons, users are given the option when creating a
+ * new page as to which skeleton they want to start with. Each skeleton contains one or more {@link SkeletonPart}.
  *
  * Whenever any new page is created, the list of {@link Skeleton} objects are checked to see if there is one that 
  * matches the page type that was created. If one is found, any linked {@link SkeletonPart} are instantiated and added 
  * to the newly-created page.
+ * 
+ * @property SkeletonPart[] Parts The list of skeleton parts attached to this skeleton
  */
 class Skeleton extends DataObject implements PermissionProvider {
 
@@ -63,12 +66,8 @@ class Skeleton extends DataObject implements PermissionProvider {
 		$existingSkeletons = Skeleton::get();
 
 		foreach (ClassInfo::subClassesFor($baseClass) as $className) {
-			$skeletonExistsForClass = !is_null($existingSkeletons->filter('PageType', $className)->first());
-
 		    if (Extensible::has_extension($className, $extension)) {
-				if ($this->PageType == $className || !$skeletonExistsForClass) {
-                    $classes[$className] = singleton($className)->singular_name();
-                }
+                $classes[$className] = singleton($className)->singular_name();
 			}
 		}
 
@@ -94,8 +93,10 @@ class Skeleton extends DataObject implements PermissionProvider {
 	}
 
 	public function PageTypeName() {
-		if ($this->PageType) {
+		if ($this->PageType && class_exists($this->PageType)) {
             return singleton($this->PageType)->singular_name();
+        } elseif ($this->PageType) {
+		    return sprintf('%s (invalid)', $this->PageType);
         } else {
 		    return '';
         }

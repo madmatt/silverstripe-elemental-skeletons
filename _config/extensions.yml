@@ -1,3 +1,3 @@
-Page:
+SilverStripe\CMS\Controllers\CMSPageAddController:
   extensions:
-    - DNADesign\ElementalSkeletons\Extensions\SkeletonExtension
+    - DNADesign\ElementalSkeletons\Extensions\CMSPageAddControllerExtension
